@@ -1,10 +1,61 @@
-{% extends "index.html" %}
-
-{% block content %}
-    <h1>Books</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+        header button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5em 1em;
+            cursor: pointer;
+        }
+        header button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Books</h1>
+        <button onclick="location.href='/index'">Return to Index</button>
+    </header>
     <ul>
     {% for book in books %}
-        <li>{{ book.title }} by {{ book.author }} (Added by {{ book.user.username }})</li>
+        <li>
+            <h2>{{ book.title }}</h2>
+            <p>Author: {{ book.author }}</p>
+            <p>Description: {{ book.description }}</p>
+            <p>Genre: {{ book.genre }}</p>
+            <p>Added by: {{ book.user.username }}</p>
+        </li>
     {% endfor %}
     </ul>
-{% endblock %}
+</body>
+</html>

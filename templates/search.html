@@ -1,17 +1,79 @@
-{% extends "index.html" %}
-
-{% block content %}
-    <h1>Search</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+        header button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5em 1em;
+            cursor: pointer;
+        }
+        header button:hover {
+            background-color: #444;
+        }
+        form {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Search</h1>
+        <button onclick="location.href='/index'">Return to Index</button>
+    </header>
     <form action="" method="post">
         <label for="search_query">Search for:</label>
-        <input type="text" id="search_query" name="search_query">
+        <input type="text" id="search_query" name="q">
         <button type="submit">Search</button>
     </form>
     {% if search_results %}
+        <h2>Results:</h2>
         <ul>
         {% for result in search_results %}
-            <li>{{ result.title }} by {{ result.author }}</li>
+            {% if result.__class__.__name__ == 'UserProfile' %}
+                <li>
+                    <h2>{{ result.username }}</h2>
+                    <p>Email: {{ result.email }}</p>
+                </li>
+            {% elif result.__class__.__name__ == 'Book' %}
+                <li>
+                    <h2>{{ result.title }}</h2>
+                    <p>Author: {{ result.author }}</p>
+                    <p>Description: {{ result.description }}</p>
+                    <p>Genre: {{ result.genre }}</p>
+                    <p>Added by: {{ result.user.username }}</p>
+                </li>
+            {% endif %}
         {% endfor %}
         </ul>
     {% endif %}
-{% endblock %}
+</body>
+</html>

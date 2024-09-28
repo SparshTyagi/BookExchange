@@ -1,15 +1,72 @@
-{% extends "index.html" %}
-
-{% block content %}
-    <h1>Discussion Board</h1>
-    <form method="POST" action="{{ url_for('routes.discussion_board') }}">
+<!DOCTYPE html>
+<html lang="en">
+    {% if error %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+{% endif %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion Board</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+        header button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 0.5em 1em;
+            cursor: pointer;
+        }
+        header button:hover {
+            background-color: #444;
+        }
+        form {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Discussion Board</h1>
+        <button onclick="location.href='/index'">Return to Index</button>
+    </header>
+    <form action="" method="post">
         <label for="content">Post a message:</label>
-        <textarea id="content" name="content" required></textarea>
+        <textarea id="content" name="content"></textarea>
         <button type="submit">Post</button>
     </form>
+    <h2>Discussion Posts:</h2>
     <ul>
     {% for post in discussion_posts %}
-        <li>{{ post.user.username }}: {{ post.content }}</li>
+        <li>
+            <h3>{{ post.user.username }} - {{ post.created_at }}</h3>
+            <p>{{ post.content }}</p>
+        </li>
     {% endfor %}
     </ul>
-{% endblock %}
+</body>
+</html>

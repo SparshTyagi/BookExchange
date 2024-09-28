@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import DateTime
 from flask_login import UserMixin
+from datetime import datetime
+
 
 Base = declarative_base()
 
@@ -46,6 +48,7 @@ class DiscussionPost(Base):
     content = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey('user_profiles.id'))
     user = relationship("UserProfile", backref="discussion_posts")
+    created_at = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f"DiscussionPost('{self.content}')"
