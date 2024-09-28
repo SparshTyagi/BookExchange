@@ -33,14 +33,14 @@
     <div class="container">
         <h1>Welcome to Book Exchange</h1>
         <p>Our mission is to give books a second life by connecting readers who want to exchange books with those who are looking for new titles to read.</p>
-        <p> Browse our collection of books, connect with other readers, and start exchanging today!</p>
+        <p>Browse our collection of books, connect with other readers, and start exchanging today!</p>
         <div class="search-results">
             <h2>What can you do here?</h2>
             <ul>
                 <li>
-                    <h3>Browse Books</h3>
-                    <p>View a list of all available books on the platform.</p>
-                    <a href="{{ url_for('routes.books') }}">View Books</a>
+                    <h3>Discover Books</h3>
+                    <p>Find books that might interest you and see what other readers though of them.</p>
+                    <a href="{{ url_for('routes.books') }}">Browse Books</a>
                 </li>
                 <li>
                     <h3>Search for Books</h3>
@@ -48,17 +48,20 @@
                     <a href="{{ url_for('routes.search') }}">Search for Books</a>
                 </li>
                 <li>
-                    <h3>Join the Discussion</h3>
+                    <h3>Join the Community</h3>
                     <p>Participate in discussions with other users about books and reading.</p>
                     <a href="{{ url_for('routes.discussion_board') }}">Join the Discussion</a>
                 </li>
-                {% if current_user.is_authenticated %}
+                <li>
+                    <h3>List your Books for exchange</h3>
+                    <p>Offer books you've already gone through in exchange for ones you're looking for.</p>
+                    <a href="{{ url_for('routes.exchange_board') }}">Exchange Your Books</a>
+                </li>
                     <li>
                         <h3>Add a New Book</h3>
-                        <p>Add a new book to the platform for others to see.</p>
+                        <p>Add a new book to the platform with your review for others to see.</p>
                         <a href="{{ url_for('routes.add_book') }}">Add a New Book</a>
                     </li>
-                {% endif %}
             </ul>
         </div>
     </div>

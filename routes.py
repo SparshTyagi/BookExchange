@@ -44,15 +44,29 @@ def search():
         if filter_by == 'book':
             books = db.session.query(Book).filter(Book.title.like(f'%{search_query}%') | Book.author.like(f'%{search_query}%')).all()
             search_results = books
+            exchange_posts = db.session.query(ExchangePost).all()
+            exchange_offers = {}
+            for post in exchange_posts:
+                for book in post.offering.split(','):
+                    if book.strip() not in exchange_offers:
+                        exchange_offers[book.strip()] = []
+                    exchange_offers[book.strip()].append(post)
+            return render_template('search.html', search_results=search_results, exchange_offers=exchange_offers, search_query=search_query, filter_by=filter_by)
         elif filter_by == 'user':
             users = db.session.query(UserProfile).filter(UserProfile.username.like(f'%{search_query}%')).all()
             search_results = users
             if len(search_results) <= 3:
                 books_list = []
+                exchange_offers = []
+                exchange_looks = []
                 for user in search_results:
                     user_books = db.session.query(Book).filter(Book.user_id == user.id).all()
                     books_list.append((user, user_books))
-                return render_template('search.html', search_results=search_results, books_list=books_list, search_query=search_query, filter_by=filter_by)
+                    user_exchange_offers = db.session.query(ExchangePost).filter(ExchangePost.user_id == user.id).all()
+                    exchange_offers.append((user, user_exchange_offers))
+                    user_exchange_looks = db.session.query(ExchangePost).filter(ExchangePost.user_id == user.id).all()
+                    exchange_looks.append((user, user_exchange_looks))
+                return render_template('search.html', search_results=search_results, books_list=books_list, exchange_offers=exchange_offers, exchange_looks=exchange_looks, search_query=search_query, filter_by=filter_by)
     return render_template('search.html', search_results=search_results, search_query=search_query, filter_by=filter_by)
 
 @routes.route('/')
