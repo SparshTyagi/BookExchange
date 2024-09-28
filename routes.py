@@ -68,7 +68,22 @@ def search_books():
     books = db.session.query(Book).filter(Book.title.like(f'%{search_query}%')).all()
     return jsonify([{'id': book.id, 'title': book.title, 'author': book.author, 'description': book.description, 'genre': book.genre} for book in books])
 
+
 @routes.route('/')
+def main():
+    return render_template('main.html')
+
+@routes.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+    user = db.session.query(UserProfile).filter_by(username=username).first()
+    if user and user.password == password:
+        return redirect(url_for('routes.index'))
+    else:
+        return render_template('main.html', error='Invalid username or password')
+
+@routes.route('/index')
 def index():
     return render_template('index.html')
 
@@ -77,21 +92,65 @@ def books():
     books = db.session.query(Book).all()
     return render_template('books.html', books=books)
 
-@routes.route('/user_profiles')
-def user_profiles():
-    user_profiles = db.session.query(UserProfile).all()
-    return render_template('user_profiles.html', user_profiles=user_profiles)
-
 @routes.route('/search')
 def search():
     return render_template('search.html')
 
+@routes.route('/user_profiles')
+def user_profiles():
+    profiles = db.session.query(UserProfile).all()
+    print(profiles)  # Add this line to print the profiles
+    return render_template('user_profiles.html', profiles=profiles)
+
 @routes.route('/create_profile', methods=['GET', 'POST'])
 def create_profile():
     if request.method == 'POST':
-        # Create a new user profile
-        user_profile = UserProfile(username=request.form['username'], email=request.form['email'], password=request.form['password'])
+        # Handle the form data and create a new user profile
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        if password != confirm_password:
+            error = 'Passwords do not match'
+            return render_template('create_profile.html', error=error)
+
+        if db.session.query(UserProfile).filter_by(username=username).first():
+            error = 'Username already exists'
+            return render_template('create_profile.html', error=error)
+
+        if db.session.query(UserProfile).filter_by(email=email).first():
+            error = 'Email already exists'
+            return render_template('create_profile.html', error=error)
+
+        user_profile = UserProfile(username=username, email=email, password=password)
         db.session.add(user_profile)
         db.session.commit()
-        return redirect(url_for('routes.user_profiles'))
-    return render_template('create_profile.html')
+        return redirect(url_for('routes.main'))
+    else:
+        return render_template('create_profile.html')
+
+@routes.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        title = request.form['title']
+        author = request.form['author']
+        genre = request.form['genre']
+        description = request.form['description']
+
+        # Validate the form data
+        if not title or not author or not genre or not description:
+            error = 'All fields are required'
+            return render_template('add_book.html', error=error)
+
+        # Create a new Book object
+        new_book = Book(title=title, author=author, genre=genre, description=description)
+
+        # Add the new book to the database
+        db.session.add(new_book)
+        db.session.commit()
+
+        # Redirect to the books page
+        return redirect(url_for('routes.books'))
+
+    return render_template('add_book.html')

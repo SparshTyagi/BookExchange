@@ -11,6 +11,8 @@ class Book(Base):
     author = Column(String(50), nullable=False)
     description = Column(Text, nullable=True)
     genre = Column(String(50), nullable=True)
+    user_id = Column(Integer, ForeignKey('user_profiles.id'))
+    user = relationship("UserProfile", backref="books")
 
     def __repr__(self):
         return f"Book('{self.title}', '{self.author}')"

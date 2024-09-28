@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Exchange Platform</title>
+</head>
+<body>
+    <h1>Welcome to the Book Exchange Platform</h1>
+    <div id="login-container">
+        <h2>Login</h2>
+        <form method="POST" action="{{ url_for('routes.login') }}">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div id="create-user-container">
+        <h2>Create User</h2>
+        <a href="{{ url_for('routes.create_profile') }}">Create a new user</a>
+    </div>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
