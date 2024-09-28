@@ -49,6 +49,9 @@
                         </div>
                         <button class="btn">Login</button>
                     </form>
+                    {% if error %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endif %}
                 </li>
                 <li>
                     <h3>Create a Profile</h3>
@@ -62,9 +65,6 @@
                 </li>
             </ul>
         </div>
-        {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
     </div>
 </body>
 </html>

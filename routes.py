@@ -121,6 +121,7 @@ def create_profile():
     else:
         return render_template('create_profile.html')
 
+
 @routes.route('/add_book', methods=['GET', 'POST'])
 @login_required
 def add_book():
@@ -129,6 +130,8 @@ def add_book():
         author = request.form['author']
         genre = request.form['genre']
         description = request.form['description']
+        review = request.form['review']
+        rating = request.form.get('rating', None)
 
         # Validate the form data
         if not title or not author or not genre or not description:
@@ -136,7 +139,7 @@ def add_book():
             return render_template('add_book.html', error=error)
 
         # Create a new Book object
-        new_book = Book(title=title, author=author, genre=genre, description=description, user_id=current_user.id)
+        new_book = Book(title=title, author=author, genre=genre, description=description, review=review, rating=rating, user_id=current_user.id)
         # Add the new book to the database
         db.session.add(new_book)
         db.session.commit()
