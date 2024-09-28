@@ -12,7 +12,7 @@
             <ul>
                 <li><a href="{{ url_for('routes.index') }}">Home</a></li>
                 <li><a href="{{ url_for('routes.books') }}">Books</a></li>
-                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search Books/Users</a></li>
                 <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
                 <li><a href="{{ url_for('routes.exchange_board') }}">Exchange Board</a></li>
 
@@ -44,11 +44,8 @@
                 </li>
                 <li>
                     <h3>Search for Books</h3>
-                    <p>Search for specific books by title, author, or genre.</p>
+                    <p>Search for Users or specific books by title, author, or genre. Find out if anyone is looking to exchange that book, and look for user's contact information if so</p>
                     <a href="{{ url_for('routes.search') }}">Search for Books</a>
-                </li>
-                <li>
-                    <h3>Join the Community</h3>
                     <p>Participate in discussions with other users about books and reading.</p>
                     <a href="{{ url_for('routes.discussion_board') }}">Join the Discussion</a>
                 </li>

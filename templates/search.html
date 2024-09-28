@@ -12,7 +12,7 @@
             <ul>
                 <li><a href="{{ url_for('routes.index') }}">Home</a></li>
                 <li><a href="{{ url_for('routes.books') }}">Books</a></li>
-                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search Books/Users</a></li>
                 <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
                 <li><a href="{{ url_for('routes.exchange_board') }}">Exchange Board</a></li>
 
@@ -49,8 +49,8 @@
             <h2>Search Results:</h2>
             <ul>
             {% for result in search_results %}
-                {% if result.__class__.__name__ == 'UserProfile' %}
-                    <li>
+                <li class="discussion-post">
+                    {% if result.__class__.__name__ == 'UserProfile' %}
                         <h3>User: {{ result.username }}</h3>
                         <p>Email: {{ result.email }}</p>
                         {% if books_list %}
@@ -98,9 +98,7 @@
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-                    </li>
-                {% elif result.__class__.__name__ == 'Book' %}
-                    <li>
+                    {% elif result.__class__.__name__ == 'Book' %}
                         <h3>Book: {{ result.title }}</h3>
                         <p>Author: {{ result.author }}</p>
                         <p>Description: {{ result.description }}</p>
@@ -109,25 +107,23 @@
                         <p>Contact at: {{ result.user.email }}</p>
                         {% if exchange_offers %}
                         {% if result.title in exchange_offers %}
-                            <h4>Offered for exchange by:</h4>
+                            <h4>Exchange Offers:</h4>
                             <ul>
-                            {% for post in exchange_offers[result.title] %}
+                            {% for offer in exchange_offers[result.title] %}
                                 <li>
-                                    <p>{{ post.user.username }} ({{ post.created_at.strftime('%Y-%m-%d %H:%M:%S') }})</p>
-                                    <p>Contact at: {{ post.user.email }}</p>
-                                    <p>Looking for: {{ post.looking_for }}</p>
+                                    <p><b>Offering:</b> {{ offer.offering }}</p>
+                                    <p><b>Looking for:</b> {{ offer.looking_for }}</p>
+                                    <p><b>Contact:</b> {{ offer.user.username }} ({{ offer.user.email }})</p>
                                 </li>
                             {% endfor %}
                             </ul>
                         {% endif %}
                     {% endif %}
+                    {% endif %}
                 </li>
+            {% endfor %}
+            </ul>
             {% endif %}
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No search results found.</p>
-    {% endif %}
         </div>
     </div>
 </body>
