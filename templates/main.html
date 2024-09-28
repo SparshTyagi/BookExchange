@@ -2,30 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Exchange Platform</title>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <h1>Welcome to the Book Exchange Platform</h1>
-    <div id="login-container">
-        <h2>Login</h2>
-        <form method="POST" action="{{ url_for('routes.login') }}">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
-            <button type="submit">Login</button>
-        </form>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                <li><a href="{{ url_for('routes.books') }}">Books</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('routes.add_book') }}">Add Book</a></li>
+                {% endif %}
+                <li class="nav-right">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('routes.create_profile') }}">Create Profile</a>&nbsp;&nbsp;
+                        <a href="{{ url_for('routes.main') }}">Login</a>
+                    {% else %}
+                        <a href="{{ url_for('routes.logout') }}">Logout</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Welcome to the Book Exchange Platform</h1>
+        <div class="search-results">
+            <h2>Login or Create a Profile</h2>
+            <ul>
+                <li>
+                    <h3>Login</h3>
+                    <p>Login to your existing account.</p>
+                    <form method="POST" action="{{ url_for('routes.login') }}">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button class="btn">Login</button>
+                    </form>
+                </li>
+                <li>
+                    <h3>Create a Profile</h3>
+                    <p>Create a new account.</p>
+                    <a href="{{ url_for('routes.create_profile') }}">Create a Profile</a>
+                </li>
+                <li>
+                    <h3>View as Guest</h3>
+                    <p>View the platform as a guest.</p>
+                    <a href="{{ url_for('routes.index') }}">View as Guest</a>
+                </li>
+            </ul>
+        </div>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
     </div>
-    <div id="create-user-container">
-        <h2>Create User</h2>
-        <a href="{{ url_for('routes.create_profile') }}">Create a new user</a>
-    </div>
-    <div id="view-as-guest-container">
-        <h2>View as Guest</h2>
-        <a href="{{ url_for('routes.index') }}">View the platform as a guest</a>
-    </div>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
 </body>
 </html>

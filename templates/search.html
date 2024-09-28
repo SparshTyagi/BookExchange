@@ -4,76 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            text-align: center;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        li:last-child {
-            border-bottom: none;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1em;
-            text-align: center;
-        }
-        header button {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 0.5em 1em;
-            cursor: pointer;
-        }
-        header button:hover {
-            background-color: #444;
-        }
-        form {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
     <header>
-        <h1>Search</h1>
-        <button onclick="location.href='/index'">Return to Index</button>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                <li><a href="{{ url_for('routes.books') }}">Books</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('routes.add_book') }}">Add Book</a></li>
+                {% endif %}
+                <li class="nav-right">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('routes.create_profile') }}">Create Profile</a>&nbsp;&nbsp;
+                        <a href="{{ url_for('routes.main') }}">Login</a>
+                    {% else %}
+                        <a href="{{ url_for('routes.logout') }}">Logout</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
     </header>
-    <form action="" method="post">
-        <label for="search_query">Search for:</label>
-        <input type="text" id="search_query" name="q">
-        <button type="submit">Search</button>
-    </form>
-    {% if search_results %}
-        <h2>Results:</h2>
-        <ul>
-        {% for result in search_results %}
-            {% if result.__class__.__name__ == 'UserProfile' %}
-                <li>
-                    <h2>{{ result.username }}</h2>
-                    <p>Email: {{ result.email }}</p>
-                </li>
-            {% elif result.__class__.__name__ == 'Book' %}
-                <li>
-                    <h2>{{ result.title }}</h2>
-                    <p>Author: {{ result.author }}</p>
-                    <p>Description: {{ result.description }}</p>
-                    <p>Genre: {{ result.genre }}</p>
-                    <p>Added by: {{ result.user.username }}</p>
-                </li>
+    <div class="container">
+        <h1>Search</h1>
+        <form method="POST" action="{{ url_for('routes.search') }}">
+            <div class="form-group">
+                <input type="text" class="form-control" name="search_query" placeholder="Search..." value="{{ search_query }}">
+            </div>
+            <button class="btn">Search</button>
+        </form>
+        <div class="search-results">
+            {% if search_results %}
+                <h2>Search Results:</h2>
+                <ul>
+                {% for result in search_results %}
+                    {% if result.__class__.__name__ == 'UserProfile' %}
+                        <li>
+                            <h3>User: {{ result.username }}</h3>
+                            <p>Email: {{ result.email }}</p>
+                        </li>
+                    {% elif result.__class__.__name__ == 'Book' %}
+                        <li>
+                            <h3>Book: {{ result.title }}</h3>
+                            <p>Author: {{ result.author }}</p>
+                            <p>Description: {{ result.description }}</p>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No search results found.</p>
             {% endif %}
-        {% endfor %}
-        </ul>
-    {% endif %}
+        </div>
+    </div>
 </body>
 </html>

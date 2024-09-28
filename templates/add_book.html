@@ -2,23 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Book</title>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <h1>Add a New Book</h1>
-    <form method="POST" action="{{ url_for('routes.add_book') }}">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required><br>
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" required><br>
-        <label for="genre">Genre:</label>
-        <input type="text" id="genre" name="genre" required><br>
-        <label for="description">Description:</label>
-        <input type="text" id="description" name="description" required><br>
-        <button type="submit">Add Book</button>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                <li><a href="{{ url_for('routes.books') }}">Books</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
+                <li><a href="{{ url_for('routes.add_book') }}">Add Book</a></li>
+                <li class="nav-right">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('routes.create_profile') }}">Create Profile</a>&nbsp;&nbsp;
+                        <a href="{{ url_for('routes.main') }}">Login</a>
+                    {% else %}
+                        <a href="{{ url_for('routes.logout') }}">Logout</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+<!-- add_book.html -->
+
+<div class="container">
+    <h1 style="text-align: center;">Add a New Book</h1>
+    <form method="POST" action="{{ url_for('routes.add_book') }}" style="max-width: 400px; margin: 0 auto;">
+        <div class="form-group">
+            <label for="title" style="font-size: 16px;">Title:</label>
+            <input type="text" id="title" name="title" class="form-control" style="height: 30px; font-size: 16px;" required>
+        </div>
+        <div class="form-group">
+            <label for="author" style="font-size: 16px;">Author:</label>
+            <input type="text" id="author" name="author" class="form-control" style="height: 30px; font-size: 16px;" required>
+        </div>
+        <div class="form-group">
+            <label for="genre" style="font-size: 16px;">Genre:</label>
+            <input type="text" id="genre" name="genre" class="form-control" style="height: 30px; font-size: 16px;" required>
+        </div>
+        <div class="form-group">
+            <label for="description" style="font-size: 16px;">Description:</label>
+            <textarea id="description" name="description" class="form-control" style="height: 100px; font-size: 16px;" required></textarea>
+        </div>
+        <button class="btn" style="width: 100%; font-size: 16px;">Add Book</button>
     </form>
     {% if error %}
-        <p style="color: red;">{{ error }}</p>
+        <p style="color: red; text-align: center;">{{ error }}</p>
     {% endif %}
+</div>
 </body>
 </html>

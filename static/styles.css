@@ -1,10 +1,18 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Merriweather', serif;
+    background-color: #f5f5f5;
     margin: 0;
     padding: 0;
 }
 
 header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+nav {
     background-color: #333;
     color: #fff;
     padding: 1em;
@@ -28,30 +36,134 @@ nav a {
     text-decoration: none;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2em;
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
-section {
-    background-color: #f7f7f7;
-    padding: 1em;
+.form-group {
     margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-control {
+    width: 90%;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    border-radius: 5px;
+}
+
+.form-control:focus {
+    border-color: #aaa;
+}
+
+.btn {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #444;
+}
+
+.return-btn {
+    background-color: #fff;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    float: right;
+}
+
+.return-btn:hover {
+    background-color: #ccc;
 }
 
 h1 {
-    margin-top: 0;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-#book-list, #user-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#book-list li, #user-list li {
+h2 {
+    color: #666;
     margin-bottom: 10px;
+}
+
+p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.book-cover {
+    width: 100px;
+    height: 150px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-info {
+    margin: 10px;
+}
+
+.book-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.book-author {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.book-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.search-results {
+    margin: 20px;
+}
+
+.search-result {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-result:hover {
+    background-color: #f9f9f9;
+}
+
+.discussion-post {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.discussion-post:hover {
+    background-color: #f9f9f9;
 }

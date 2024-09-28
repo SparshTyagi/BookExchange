@@ -4,58 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            text-align: center;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        li {
-            padding: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-        li:last-child {
-            border-bottom: none;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1em;
-            text-align: center;
-        }
-        header button {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 0.5em 1em;
-            cursor: pointer;
-        }
-        header button:hover {
-            background-color: #444;
-        }
-    </style>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
     <header>
-        <h1>Books</h1>
-        <button onclick="location.href='/index'">Return to Index</button>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                <li><a href="{{ url_for('routes.books') }}">Books</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('routes.add_book') }}">Add Book</a></li>
+                {% endif %}
+                <li class="nav-right">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('routes.create_profile') }}">Create Profile</a>&nbsp;&nbsp;
+                        <a href="{{ url_for('routes.main') }}">Login</a>
+                    {% else %}
+                        <a href="{{ url_for('routes.logout') }}">Logout</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
     </header>
-    <ul>
-    {% for book in books %}
-        <li>
-            <h2>{{ book.title }}</h2>
-            <p>Author: {{ book.author }}</p>
-            <p>Description: {{ book.description }}</p>
-            <p>Genre: {{ book.genre }}</p>
-            <p>Added by: {{ book.user.username }}</p>
-        </li>
-    {% endfor %}
-    </ul>
+    <div class="container">
+        <h1>Books</h1>
+        <div class="search-results">
+            <h2>Available Books:</h2>
+            <ul>
+            {% for book in books %}
+                <li class="search-result">
+                    <h3>{{ book.title }}</h3>
+                    <p>Author: {{ book.author }}</p>
+                    <p>Description: {{ book.description }}</p>
+                    <p>Genre: {{ book.genre }}</p>
+                    <p>Added by: {{ book.user.username }}</p>
+                    <p>Contact at: {{ book.user.email }}</p>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

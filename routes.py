@@ -50,14 +50,14 @@ def get_exchange_request(request_id):
 
 @routes.route('/search', methods=['GET', 'POST'])
 def search():
+    search_query = ''
+    search_results = []
     if request.method == 'POST':
-        search_query = request.form['q']
+        search_query = request.form['search_query']
         users = db.session.query(UserProfile).filter(UserProfile.username.like(f'%{search_query}%')).all()
         books = db.session.query(Book).filter(Book.title.like(f'%{search_query}%') | Book.author.like(f'%{search_query}%')).all()
         search_results = users + books
-        return render_template('search.html', search_results=search_results)
-    else:
-        return render_template('search.html')
+    return render_template('search.html', search_results=search_results, search_query=search_query)
 
 
 @routes.route('/')
@@ -157,10 +157,14 @@ def discussion_board():
     error = None
     if request.method == 'POST':
         if current_user.is_authenticated:
-            content = request.form['content']
-            discussion_post = DiscussionPost(content=content, user_id=current_user.id)
-            db.session.add(discussion_post)
-            db.session.commit()
+            content = request.form['content'].strip()
+            if content == '':
+                error = 'Please enter a message before posting.'
+            else:
+                discussion_post = DiscussionPost(content=content, user_id=current_user.id)
+                db.session.add(discussion_post)
+                db.session.commit()
+                return redirect(url_for('routes.discussion_board'))  # Redirect to the discussion board page
         else:
             error = 'You must be logged in to post to the discussion board.'
     return render_template('discussion_board.html', discussion_posts=discussion_posts, error=error)

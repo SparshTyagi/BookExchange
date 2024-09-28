@@ -4,38 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Exchange Platform</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        nav {
-            background-color: #333;
-            color: #fff;
-            padding: 1em;
-            text-align: center;
-        }
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: space-between;
-        }
-        nav li {
-            margin-right: 20px;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .nav-right {
-            margin-left: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="#home">Home</a></li>
+                <li><a href="{{ url_for('routes.index') }}">Home</a></li>
                 <li><a href="{{ url_for('routes.books') }}">Books</a></li>
                 <li><a href="{{ url_for('routes.search') }}">Search</a></li>
                 <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
@@ -53,12 +28,36 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <section id="home">
-            <h1>Welcome to the Book Exchange Platform</h1>
-            <p>This platform allows users to exchange books with each other.</p>
-        </section>
-    </main>
-    <script src="script.js"></script>
+    <div class="container">
+        <h1>Welcome to the Book Exchange Platform</h1>
+        <p>This platform allows users to exchange books with each other.</p>
+        <div class="search-results">
+            <h2>What can you do here?</h2>
+            <ul>
+                <li>
+                    <h3>Browse Books</h3>
+                    <p>View a list of all available books on the platform.</p>
+                    <a href="{{ url_for('routes.books') }}">View Books</a>
+                </li>
+                <li>
+                    <h3>Search for Books</h3>
+                    <p>Search for specific books by title, author, or genre.</p>
+                    <a href="{{ url_for('routes.search') }}">Search for Books</a>
+                </li>
+                <li>
+                    <h3>Join the Discussion</h3>
+                    <p>Participate in discussions with other users about books and reading.</p>
+                    <a href="{{ url_for('routes.discussion_board') }}">Join the Discussion</a>
+                </li>
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <h3>Add a New Book</h3>
+                        <p>Add a new book to the platform for others to see.</p>
+                        <a href="{{ url_for('routes.add_book') }}">Add a New Book</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

@@ -2,23 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create User</title>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <h1>Add a New User</h1>
-    <form method="POST" action="{{ url_for('routes.create_profile') }}">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <button type="submit">Create Profile</button>
-    </form>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                <li><a href="{{ url_for('routes.books') }}">Books</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
+                <li class="nav-right">
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('routes.create_profile') }}">Create Profile</a>&nbsp;&nbsp;
+                        <a href="{{ url_for('routes.main') }}">Login</a>
+                    {% else %}
+                        <a href="{{ url_for('routes.logout') }}">Logout</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1 style="text-align: center;">Create a New User</h1>
+        <form method="POST" action="{{ url_for('routes.create_profile') }}" style="max-width: 400px; margin: 0 auto;">
+            <div class="form-group">
+                <label for="username" style="font-size: 16px;">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" style="height: 30px; font-size: 16px;" required>
+            </div>
+            <div class="form-group">
+                <label for="email" style="font-size: 16px;">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" style="height: 30px; font-size: 16px;" required>
+            </div>
+            <div class="form-group">
+                <label for="password" style="font-size: 16px;">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" style="height: 30px; font-size: 16px;" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password" style="font-size: 16px;">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" style="height: 30px; font-size: 16px;" required>
+            </div>
+            <button class="btn" style="width: 100%; font-size: 16px;">Create User</button>
+        </form>
+        {% if error %}
+            <p style="color: red; text-align: center;">{{ error }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>
