@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Exchange Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        nav li {
+            margin-right: 20px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="{{ url_for('routes.books') }}">Books</a></li>
+                <li><a href="{{ url_for('routes.user_profiles') }}">Users</a></li>
+                <li><a href="{{ url_for('routes.search') }}">Search</a></li>
+                <li><a href="{{ url_for('routes.create_profile') }}">Create Profile</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="home">
+            <h1>Welcome to the Book Exchange Platform</h1>
+            <p>This platform allows users to exchange books with each other.</p>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
