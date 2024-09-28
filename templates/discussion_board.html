@@ -45,7 +45,7 @@
             <ul>
             {% for post in discussion_posts %}
                 <li class="search-result">
-                    <h3>{{ post.user.username }} - {{ post.created_at }}</h3>
+                    <h3>{{ post.user.username }} - {{ post.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</h3>
                     <p>{{ post.content }}</p>
                 </li>
             {% endfor %}
