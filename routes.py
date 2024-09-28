@@ -52,13 +52,23 @@ def get_exchange_request(request_id):
 def search():
     search_query = ''
     search_results = []
+    filter_by = ''
     if request.method == 'POST':
         search_query = request.form['search_query']
-        users = db.session.query(UserProfile).filter(UserProfile.username.like(f'%{search_query}%')).all()
-        books = db.session.query(Book).filter(Book.title.like(f'%{search_query}%') | Book.author.like(f'%{search_query}%')).all()
-        search_results = users + books
-    return render_template('search.html', search_results=search_results, search_query=search_query)
-
+        filter_by = request.form['filter_by']
+        if filter_by == 'book':
+            books = db.session.query(Book).filter(Book.title.like(f'%{search_query}%') | Book.author.like(f'%{search_query}%')).all()
+            search_results = books
+        elif filter_by == 'user':
+            users = db.session.query(UserProfile).filter(UserProfile.username.like(f'%{search_query}%')).all()
+            search_results = users
+            if len(search_results) <= 3:
+                books_list = []
+                for user in search_results:
+                    user_books = db.session.query(Book).filter(Book.user_id == user.id).all()
+                    books_list.append((user, user_books))
+                return render_template('search.html', search_results=search_results, books_list=books_list, search_query=search_query, filter_by=filter_by)
+    return render_template('search.html', search_results=search_results, search_query=search_query, filter_by=filter_by)
 
 @routes.route('/')
 def main():
