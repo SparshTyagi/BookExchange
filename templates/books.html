@@ -14,6 +14,8 @@
                 <li><a href="{{ url_for('routes.books') }}">Books</a></li>
                 <li><a href="{{ url_for('routes.search') }}">Search</a></li>
                 <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
+                <li><a href="{{ url_for('routes.exchange_board') }}">Exchange Board</a></li>
+
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('routes.add_book') }}">Add Book</a></li>
                 {% endif %}

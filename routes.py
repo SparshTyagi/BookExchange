@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for
-from models import Base, UserProfile, Book, ExchangeRequest, DiscussionPost
+from models import *
 from database import db
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -32,21 +32,6 @@ def create_book():
 def get_all_books():
     books = db.session.query(Book).all()
     return render_template('books.html', books=books)
-
-@routes.route('/exchange_requests', methods=['POST'])
-def create_exchange_request():
-    data = request.get_json()
-    exchange_request = ExchangeRequest(**data)
-    db.session.add(exchange_request)
-    db.session.commit()
-    return jsonify({'message': 'Exchange request created successfully'}), 201
-
-@routes.route('/exchange_requests/<int:request_id>', methods=['GET'])
-def get_exchange_request(request_id):
-    exchange_request = db.session.query(ExchangeRequest).get(request_id)
-    if exchange_request is None:
-        return jsonify({'message': 'Exchange request not found'}), 404
-    return jsonify({'book_id': exchange_request.book_id, 'user_id': exchange_request.user_id, 'status': exchange_request.status})
 
 @routes.route('/search', methods=['GET', 'POST'])
 def search():
@@ -178,3 +163,22 @@ def discussion_board():
         else:
             error = 'You must be logged in to post to the discussion board.'
     return render_template('discussion_board.html', discussion_posts=discussion_posts, error=error)
+
+@routes.route('/exchange_board', methods=['GET', 'POST'])
+def exchange_board():
+    exchange_posts = db.session.query(ExchangePost).order_by(ExchangePost.created_at.desc()).all()
+    error = None
+    if request.method == 'POST':
+        if current_user.is_authenticated:
+            offering = request.form['offering'].strip()
+            looking_for = request.form['looking_for'].strip()
+            if offering == "" or looking_for == "":
+                error = 'Please enter both offering and looking for books.'
+            else:
+                exchange_post = ExchangePost(offering=offering, looking_for=looking_for, user_id=current_user.id)
+                db.session.add(exchange_post)  # Corrected here
+                db.session.commit()
+                return redirect(url_for('routes.exchange_board'))
+        else:
+            error = 'Please login to post.'
+    return render_template('exchange_board.html', exchange_posts=exchange_posts, error=error)

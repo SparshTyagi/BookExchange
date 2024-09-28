@@ -32,16 +32,6 @@ class UserProfile(Base, UserMixin):
     def __repr__(self):
         return f"UserProfile('{self.username}', '{self.email}')"
 
-class ExchangeRequest(Base):
-    __tablename__ = 'exchange_requests'
-    id = Column(Integer, primary_key=True)
-    book_id = Column(Integer, ForeignKey('books.id'))
-    user_id = Column(Integer, ForeignKey('user_profiles.id'))
-    status = Column(String(50), nullable=True)
-
-    def __repr__(self):
-        return f"ExchangeRequest('{self.book_id}', '{self.user_id}')"
-
 class DiscussionPost(Base):
     __tablename__ = 'discussion_posts'
     id = Column(Integer, primary_key=True)
@@ -52,3 +42,15 @@ class DiscussionPost(Base):
 
     def __repr__(self):
         return f"DiscussionPost('{self.content}')"
+    
+class ExchangePost(Base):
+    __tablename__ = 'exchange_posts'
+    id = Column(Integer, primary_key=True)
+    offering = Column(Text, nullable=False)
+    looking_for = Column(Text, nullable=False)
+    user_id = Column(Integer, ForeignKey('user_profiles.id'))
+    user = relationship("UserProfile", backref="exchange_posts")
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"ExchangePost('{self.offering}', '{self.looking_for}')"

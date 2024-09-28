@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discussion Board</title>
+    <title>Exchange Board</title>
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
@@ -15,7 +15,6 @@
                 <li><a href="{{ url_for('routes.search') }}">Search</a></li>
                 <li><a href="{{ url_for('routes.discussion_board') }}">Discussion Board</a></li>
                 <li><a href="{{ url_for('routes.exchange_board') }}">Exchange Board</a></li>
-
                 {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('routes.add_book') }}">Add Book</a></li>
                 {% endif %}
@@ -31,11 +30,16 @@
         </nav>
     </header>
     <div class="container">
-        <h1>Discussion Board</h1>
-        <p>Join the conversation and discuss your favorite books with other users.</p>
+        <h1>Exchange Board</h1>
+        <p>Offer books you're giving up and find books you're looking for!</p>
         <form method="POST" action="" onsubmit="return validateForm()">
             <div class="form-group">
-                <textarea class="form-control" name="content" placeholder="Post a message..."></textarea>
+                <label for="offering">Books I'm offering:</label>
+                <textarea class="form-control" name="offering" placeholder="List the books you're giving up..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="looking_for">Books I'm looking for:</label>
+                <textarea class="form-control" name="looking_for" placeholder="List the books you're looking for..."></textarea>
             </div>
             <button class="btn">Post</button>
         </form>
@@ -43,12 +47,13 @@
             <p style="color: red;">{{ error }}</p>
         {% endif %}
         <div class="search-results">
-            <h2>Discussion Posts:</h2>
+            <h2>Exchange Posts:</h2>
             <ul>
-            {% for post in discussion_posts %}
+            {% for post in exchange_posts %}
                 <li class="search-result">
                     <h3>{{ post.user.username }} - {{ post.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</h3>
-                    <p>{{ post.content }}</p>
+                    <p>Offering: {{ post.offering }}</p>
+                    <p>Looking for: {{ post.looking_for }}</p>
                 </li>
             {% endfor %}
             </ul>
@@ -56,9 +61,10 @@
     </div>
     <script>
         function validateForm() {
-            var content = document.getElementsByName("content")[0].value.trim();
-            if (content === "") {
-                alert("Please enter a message before posting.");
+            var offering = document.getElementsByName("offering")[0].value.trim();
+            var looking_for = document.getElementsByName("looking_for")[0].value.trim();
+            if (offering === "" || looking_for === "") {
+                alert("Please enter both offering and looking for books.");
                 return false;
             } else {
                 setTimeout(function(){window.location.reload();}, 100);
