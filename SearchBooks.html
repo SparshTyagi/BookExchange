@@ -1,0 +1,18 @@
+<!-- search.html -->
+<form id="search-form">
+    <label for="search-query">Search:</label>
+    <input type="text" id="search-query" name="q"><br><br>
+    <button type="submit">Search</button>
+</form>
+
+<script>
+    const form = document.getElementById('search-form');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = document.getElementById('search-query').value;
+        fetch('/search?q=' + query)
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+    });
+</script>
