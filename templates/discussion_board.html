@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <h1>Discussion Board</h1>
+    <form method="POST" action="{{ url_for('routes.discussion_board') }}">
+        <label for="content">Post a message:</label>
+        <textarea id="content" name="content" required></textarea>
+        <button type="submit">Post</button>
+    </form>
+    <ul>
+    {% for post in discussion_posts %}
+        <li>{{ post.user.username }}: {{ post.content }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

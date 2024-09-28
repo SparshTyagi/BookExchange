@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for
 from models import Base, UserProfile, Book, ExchangeRequest, DiscussionPost
 from database import db
+from flask_login import login_user, current_user, logout_user, login_required
 
 routes = Blueprint('routes', __name__)
 
@@ -79,9 +80,18 @@ def login():
     password = request.form['password']
     user = db.session.query(UserProfile).filter_by(username=username).first()
     if user and user.password == password:
+        login_user(user)
         return redirect(url_for('routes.index'))
     else:
         return render_template('main.html', error='Invalid username or password')
+
+
+@routes.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('routes.main'))
+
 
 @routes.route('/index')
 def index():
@@ -131,6 +141,7 @@ def create_profile():
         return render_template('create_profile.html')
 
 @routes.route('/add_book', methods=['GET', 'POST'])
+@login_required
 def add_book():
     if request.method == 'POST':
         title = request.form['title']
@@ -144,13 +155,31 @@ def add_book():
             return render_template('add_book.html', error=error)
 
         # Create a new Book object
-        new_book = Book(title=title, author=author, genre=genre, description=description)
-
+        new_book = Book(title=title, author=author, genre=genre, description=description, user_id=current_user.id)
         # Add the new book to the database
         db.session.add(new_book)
         db.session.commit()
 
         # Redirect to the books page
         return redirect(url_for('routes.books'))
-
     return render_template('add_book.html')
+
+
+@routes.route('/discussion_board', methods=['GET', 'POST'])
+@login_required
+def discussion_board():
+    if request.method == 'POST':
+        content = request.form['content']
+
+        # Create a new DiscussionPost object
+        discussion_post = DiscussionPost(content=content, user_id=current_user.id)
+
+        # Add the new discussion post to the database
+        db.session.add(discussion_post)
+        db.session.commit()
+
+        # Redirect to the discussion board page
+        return redirect(url_for('routes.discussion_board'))
+    else:
+        discussion_posts = db.session.query(DiscussionPost).all()
+        return render_template('discussion_board.html', discussion_posts=discussion_posts)

@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 
 Base = declarative_base()
 
@@ -17,7 +18,7 @@ class Book(Base):
     def __repr__(self):
         return f"Book('{self.title}', '{self.author}')"
 
-class UserProfile(Base):
+class UserProfile(Base, UserMixin):
     __tablename__ = 'user_profiles'
     id = Column(Integer, primary_key=True)
     username = Column(String(50), nullable=False)
@@ -42,9 +43,9 @@ class ExchangeRequest(Base):
 class DiscussionPost(Base):
     __tablename__ = 'discussion_posts'
     id = Column(Integer, primary_key=True)
+    content = Column(String, nullable=False)
     user_id = Column(Integer, ForeignKey('user_profiles.id'))
-    book_id = Column(Integer, ForeignKey('books.id'))
-    content = Column(Text, nullable=True)
+    user = relationship("UserProfile", backref="discussion_posts")
 
     def __repr__(self):
-        return f"DiscussionPost('{self.user_id}', '{self.book_id}')"
+        return f"DiscussionPost('{self.content}')"
