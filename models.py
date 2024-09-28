@@ -1,31 +1,48 @@
-from database import db
+from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
-class Base(db.Model):
-    __abstract__ = True
-
-    id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
-
-class UserProfile(Base):
-    username = db.Column(db.String(64), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(128), nullable=False)
-    book_collection = db.Column(db.Text, nullable=True)
-    preferences = db.Column(db.Text, nullable=True)
+Base = declarative_base()
 
 class Book(Base):
-    title = db.Column(db.String(128), nullable=False)
-    author = db.Column(db.String(128), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    genre = db.Column(db.String(64), nullable=True)
+    __tablename__ = 'books'
+    id = Column(Integer, primary_key=True)
+    title = Column(String(100), nullable=False)
+    author = Column(String(50), nullable=False)
+    description = Column(Text, nullable=True)
+    genre = Column(String(50), nullable=True)
+
+    def __repr__(self):
+        return f"Book('{self.title}', '{self.author}')"
+
+class UserProfile(Base):
+    __tablename__ = 'user_profiles'
+    id = Column(Integer, primary_key=True)
+    username = Column(String(50), nullable=False)
+    email = Column(String(100), nullable=False)
+    password = Column(String(100), nullable=False)
+    book_collection = Column(String(100), nullable=True)
+    preferences = Column(String(100), nullable=True)
+
+    def __repr__(self):
+        return f"UserProfile('{self.username}', '{self.email}')"
 
 class ExchangeRequest(Base):
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_profile.id'), nullable=False)
-    status = db.Column(db.String(64), nullable=False)
+    __tablename__ = 'exchange_requests'
+    id = Column(Integer, primary_key=True)
+    book_id = Column(Integer, ForeignKey('books.id'))
+    user_id = Column(Integer, ForeignKey('user_profiles.id'))
+    status = Column(String(50), nullable=True)
+
+    def __repr__(self):
+        return f"ExchangeRequest('{self.book_id}', '{self.user_id}')"
 
 class DiscussionPost(Base):
-    user_id = db.Column(db.Integer, db.ForeignKey('user_profile.id'), nullable=False)
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
-    content = db.Column(db.Text, nullable=False)
+    __tablename__ = 'discussion_posts'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user_profiles.id'))
+    book_id = Column(Integer, ForeignKey('books.id'))
+    content = Column(Text, nullable=True)
+
+    def __repr__(self):
+        return f"DiscussionPost('{self.user_id}', '{self.book_id}')"
