@@ -34,8 +34,9 @@ The Book Exchange Platform is a web application designed to facilitate the easy 
 2. Create a virtual environment: `python -m venv venv`
 3. Activate the virtual environment: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Mac/Linux)
 4. Install dependencies: `pip install -r requirements.txt`
-5. Create a database: `flask db init` and `flask db migrate`
-6. Run the application: `flask run`
+5. Run the application: `flask run`
+
+(Feel free to delete the book_exchange.db file to reset the database at any time.)
 
 ## Usage
 ---------
