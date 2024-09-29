@@ -44,7 +44,7 @@ The Book Exchange Platform is a web application designed to facilitate the easy 
 1. Open a web browser and navigate to `http://localhost:5000`
 2. Register for an account or log in if you already have one
 3. Create a user profile and add books to your collection
-4. Search for books and users to exchange books with
+4. Search for books and users to exchange books with, or post public exchange notices
 5. Participate in discussions on the discussion board
 
 ## Decisions Worth Noting
