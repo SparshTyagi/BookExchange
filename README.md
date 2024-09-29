@@ -19,11 +19,13 @@ The Book Exchange Platform is a web application designed to facilitate the easy 
 ## Technical Requirements
 -------------------------
 
-* Python 3.11+
-* Flask 2.0+
-* SQLAlchemy 1.4+
-* Flask-Login 0.5+
-* Flask-SQLAlchemy 2.5+
+* Flask==3.0.3
+* Flask-SQLAlchemy==3.1.1
+* Flask-Login==0.6.3
+* Flask-WTF==1.2.1
+* WTForms==3.1.2
+* SQLAlchemy==2.0.35
+* Werkzeug==3.0.4
 
 ## Installation
 ---------------
